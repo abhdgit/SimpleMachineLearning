@@ -4,7 +4,7 @@ Created on Mon Mar 25 13:32:48 2019
 
 @author: lee
 """
-
+import matplotlib.pyplot as plt
 import numpy as np
 import numpy.linalg as lg
 class LeastSquares(object):
@@ -36,8 +36,18 @@ class LeastSquares(object):
         
         
 if __name__=="__main__":
+    #生成数据
     x=np.random.randint(1,100,size=1000).reshape(-1,5)
     y=x.dot(np.array([1,2,3,4,5]))+10+np.random.normal(0,9,int(1000/5))
     y=np.column_stack([y,2*y])
+    #拟合模型
+    x=np.random.randint(1,20,size=100).reshape(-1,1)
+    y=x*1+np.random.randint(-5,5,size=100).reshape(-1,1)
+    x_=x.copy().reshape(100)
+    y_=y.copy().reshape(100)
+    y_[y_>x_]=0
+    y_[y_!=0]=1
+    plt.scatter(x.reshape(100),y.reshape(100))
     lstsr=LeastSquares()
-    lstsr.fit(x,y)
+    lstsr.fit(x,y.reshape(-1,1))
+    plt.plot(x,x*lstsr.coef_+lstsr.intercept_)
